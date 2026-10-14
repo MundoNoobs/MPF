@@ -5,38 +5,77 @@ const PC_API_URL = "http://192.168.1.119:3001";
 const QUEUE_KEY = "mpf_sync_queue";
 const originalFetch = window.fetch.bind(window);
 
-// 1. Sembrar todas las colecciones de tu db.json en el celular apenas se importa el archivo
-function inicializarCacheDesdeSemilla() {
+// Respuesta fake 100% compatible con Android WebView
+function crearRespuestaJSON(data) {
+  const texto = JSON.stringify(data);
+  return {
+    ok: true,
+    status: 200,
+    statusText: "OK",
+    headers: new Headers({ "Content-Type": "application/json" }),
+    json: async () => JSON.parse(texto),
+    text: async () => texto,
+    clone: function () {
+      return crearRespuestaJSON(data);
+    },
+  };
+}
+
+// 1. Sembrar el db.json garantizando que no queden arrays vacíos por error
+export function sembrarDatosIniciales(forzar = false) {
   if (!dbInicial) return;
-  Object.keys(dbInicial).forEach((coleccion) => {
-    const key = `mpf_cache_${coleccion}`;
-    const actual = localStorage.getItem(key);
-    if (!actual || actual === "[]" || actual === "null") {
-      localStorage.setItem(key, JSON.stringify(dbInicial[coleccion]));
+  Object.keys(dbInicial).forEach((col) => {
+    const key = `mpf_cache_${col}`;
+    const guardado = localStorage.getItem(key);
+    let invalido = false;
+    try {
+      const parsed = JSON.parse(guardado);
+      if (!parsed || (Array.isArray(parsed) && parsed.length === 0 && dbInicial[col]?.length > 0)) {
+        invalido = true;
+      }
+    } catch {
+      invalido = true;
+    }
+
+    if (forzar || !guardado || invalido) {
+      localStorage.setItem(key, JSON.stringify(dbInicial[col]));
     }
   });
 }
 
 const getQueue = () => JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
-const saveQueue = (q) => localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+const saveQueue = (q) => {
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+  actualizarBarraEstado();
+};
 
-// 2. Comprobar si el servidor de tu PC (puerto 3001) está activo
+let ultimoEstadoOnline = false;
+let ultimoErrorRed = "";
+
+// 2. Comprobar servidor en PC
 export async function checkPCServer() {
   try {
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 1200);
+    const id = setTimeout(() => controller.abort(), 1500);
     const res = await originalFetch(`${PC_API_URL}/cuentas?t=${Date.now()}`, {
       method: "GET",
+      mode: "cors",
       signal: controller.signal,
     });
     clearTimeout(id);
+    ultimoEstadoOnline = res.ok;
+    if (res.ok) ultimoErrorRed = "";
+    actualizarBarraEstado();
     return res.ok;
-  } catch {
+  } catch (err) {
+    ultimoEstadoOnline = false;
+    ultimoErrorRed = err.message || "Sin conexión a PC";
+    actualizarBarraEstado();
     return false;
   }
 }
 
-// 3. Vaciar cola de cambios pendientes hacia la PC
+// 3. Sincronizar cola pendiente
 let sincronizando = false;
 export async function sincronizarColaConPC() {
   if (sincronizando) return;
@@ -56,7 +95,6 @@ export async function sincronizarColaConPC() {
         headers: { "Content-Type": "application/json" },
         body: item.body ? JSON.stringify(item.body) : undefined,
       });
-
       if (res.ok || res.status === 404) {
         restantes.shift();
         saveQueue(restantes);
@@ -68,74 +106,117 @@ export async function sincronizarColaConPC() {
     }
   }
   sincronizando = false;
+  actualizarBarraEstado();
 }
 
-// 4. Activar el interceptor de forma inmediata
+// 4. Barra visual superior para saber qué pasa en el celular
+function actualizarBarraEstado() {
+  let bar = document.getElementById("mpf-status-bar");
+  if (!bar && document.body) {
+    bar = document.createElement("div");
+    bar.id = "mpf-status-bar";
+    bar.style.cssText =
+      "position:fixed;bottom:0;left:0;right:0;z-index:99999;padding:6px 10px;font-size:11px;font-family:sans-serif;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 -2px 6px rgba(0,0,0,0.3);";
+    document.body.appendChild(bar);
+  }
+  if (!bar) return;
+
+  const pendientes = getQueue().length;
+  bar.style.background = ultimoEstadoOnline ? "#15803d" : "#b91c1c";
+  bar.innerHTML = `
+    <span>${
+      ultimoEstadoOnline
+        ? `🟢 PC Conectada (192.168.1.119:3001) | Cola: ${pendientes}`
+        : `🔴 Offline (${pendientes} pend.) | Usa caché local`
+    }</span>
+    <button id="mpf-btn-sync" style="background:#fff;color:#111;border:none;border-radius:4px;padding:3px 8px;font-weight:bold;font-size:11px;">
+      🔄 Sincronizar
+    </button>
+  `;
+
+  const btn = document.getElementById("mpf-btn-sync");
+  if (btn) {
+    btn.onclick = async () => {
+      btn.innerText = "⏳...";
+      const ok = await checkPCServer();
+      if (!ok) {
+        // Si la PC no conecta, asegura que los datos de db.json estén sembrados
+        sembrarDatosIniciales(true);
+      }
+      window.location.reload();
+    };
+  }
+}
+
+// 5. Activar el interceptor global
 export function activarModoOffline() {
-  inicializarCacheDesdeSemilla();
+  sembrarDatosIniciales(false);
 
   window.fetch = async (input, options = {}) => {
-    const urlStr = typeof input === "string" ? input : input.url;
+    const urlStr = typeof input === "string" ? input : input?.url || "";
 
-    // Interceptar cualquier llamada al puerto 3001
     if (!urlStr.includes(":3001")) {
       return originalFetch(input, options);
     }
 
-    const urlObj = new URL(urlStr, PC_API_URL);
-    const path = urlObj.pathname + urlObj.search;
-    const segmentos = urlObj.pathname.split("/").filter(Boolean);
-    const coleccion = segmentos[0]; // cuentas, gastos, ventas, productos, etc.
+    // Extraer ruta después de :3001
+    const partes = urlStr.split(":3001");
+    const pathAndQuery = partes[1] || "/";
+    const [pathname, queryString] = pathAndQuery.split("?");
+    const segmentos = pathname.split("/").filter(Boolean);
+    const coleccion = segmentos[0];
     const itemId = segmentos[1];
     const method = (options.method || "GET").toUpperCase();
     const cacheKey = `mpf_cache_${coleccion}`;
 
-    // --- LECTURA (GET) ---
+    // --- GET ---
     if (method === "GET") {
       const online = await checkPCServer();
       if (online) {
         await sincronizarColaConPC();
         try {
-          // Si no tiene query params, guardamos la colección completa en caché
-          const res = await originalFetch(`${PC_API_URL}${path}`);
+          const res = await originalFetch(`${PC_API_URL}${pathAndQuery}`);
           if (res.ok) {
-            const data = await res.clone().json();
-            if (!itemId && !urlObj.search) {
+            const data = await res.json();
+            if (!itemId && !queryString) {
               localStorage.setItem(cacheKey, JSON.stringify(data));
             }
-            return res;
+            return crearRespuestaJSON(data);
           }
         } catch {
-          // Si falla, usa los datos locales abajo
+          // Cae al modo offline
         }
       }
 
-      // Respuesta Offline desde la memoria del celular (o db.json de respaldo)
-      let localData = JSON.parse(
-        localStorage.getItem(cacheKey) || JSON.stringify(dbInicial[coleccion] || [])
-      );
+      // Leer desde memoria del teléfono o directamente desde dbInicial importado
+      let raw = localStorage.getItem(cacheKey);
+      let localData = [];
+      try {
+        localData = raw ? JSON.parse(raw) : dbInicial[coleccion] || [];
+        if (Array.isArray(localData) && localData.length === 0 && dbInicial[coleccion]?.length > 0) {
+          localData = dbInicial[coleccion];
+          localStorage.setItem(cacheKey, JSON.stringify(localData));
+        }
+      } catch {
+        localData = dbInicial[coleccion] || [];
+      }
 
-      // Si pide un ID específico (ej: /cuentas/1)
       if (itemId) {
         const encontrado = localData.find((x) => String(x.id) === String(itemId));
-        return new Response(JSON.stringify(encontrado || {}), {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
+        return crearRespuestaJSON(encontrado || {});
+      }
+
+      if (queryString) {
+        const params = new URLSearchParams(queryString);
+        params.forEach((valor, clave) => {
+          localData = localData.filter((item) => String(item[clave]) === String(valor));
         });
       }
 
-      // Si tiene filtros en la URL (ej: /mensualidades_pagos?mes=2026-08)
-      urlObj.searchParams.forEach((valor, clave) => {
-        localData = localData.filter((item) => String(item[clave]) === String(valor));
-      });
-
-      return new Response(JSON.stringify(localData), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
+      return crearRespuestaJSON(localData);
     }
 
-    // --- ESCRITURA (POST, PUT, PATCH, DELETE) ---
+    // --- POST, PUT, PATCH, DELETE ---
     const bodyData = options.body ? JSON.parse(options.body) : null;
     let localData = JSON.parse(
       localStorage.getItem(cacheKey) || JSON.stringify(dbInicial[coleccion] || [])
@@ -160,40 +241,36 @@ export function activarModoOffline() {
     }
     localStorage.setItem(cacheKey, JSON.stringify(localData));
 
-    // Intentar mandar a la PC si está encendida
     const online = await checkPCServer();
     if (online) {
       await sincronizarColaConPC();
       try {
-        const res = await originalFetch(`${PC_API_URL}${path}`, {
+        const res = await originalFetch(`${PC_API_URL}${pathAndQuery}`, {
           ...options,
           method,
           headers: { "Content-Type": "application/json" },
           body: method !== "DELETE" ? JSON.stringify(respuestaLocal) : undefined,
         });
-        if (res.ok) return res;
+        if (res.ok) return crearRespuestaJSON(respuestaLocal);
       } catch {
         // Pasa a la cola
       }
     }
 
-    // Guardar en la cola de espera si la PC está apagada
     const cola = getQueue();
     cola.push({
-      path,
+      path: pathAndQuery,
       method,
       body: method !== "DELETE" ? respuestaLocal : null,
       timestamp: Date.now(),
     });
     saveQueue(cola);
 
-    return new Response(JSON.stringify(respuestaLocal), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return crearRespuestaJSON(respuestaLocal);
   };
 
-  // Radar cada 5 segundos
+  window.addEventListener("DOMContentLoaded", actualizarBarraEstado);
+  setTimeout(actualizarBarraEstado, 1000);
   setInterval(async () => {
     const online = await checkPCServer();
     if (online && getQueue().length > 0) {
@@ -202,5 +279,4 @@ export function activarModoOffline() {
   }, 5000);
 }
 
-// ¡CLAVE!: Lo ejecutamos aquí mismo para que se active ANTES de que cargue App.jsx
 activarModoOffline();
