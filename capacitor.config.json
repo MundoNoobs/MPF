@@ -1,0 +1,9 @@
+{
+  "appId": "com.mpf.app",
+  "appName": "MPF",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "http"
+  }
+}
