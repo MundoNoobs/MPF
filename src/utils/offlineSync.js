@@ -5,14 +5,13 @@ const PC_API_URL = "http://192.168.1.119:3001";
 const QUEUE_KEY = "mpf_sync_queue";
 const originalFetch = window.fetch.bind(window);
 
-// 1. Sembrar los datos de tu db.json en la memoria del teléfono
+// 1. Sembrar todas las colecciones de tu db.json en el celular apenas se importa el archivo
 function inicializarCacheDesdeSemilla() {
   if (!dbInicial) return;
   Object.keys(dbInicial).forEach((coleccion) => {
     const key = `mpf_cache_${coleccion}`;
     const actual = localStorage.getItem(key);
-    // Si no existe o quedó guardado como array vacío "[]", carga los datos de db.json
-    if (!actual || actual === "[]") {
+    if (!actual || actual === "[]" || actual === "null") {
       localStorage.setItem(key, JSON.stringify(dbInicial[coleccion]));
     }
   });
@@ -21,12 +20,12 @@ function inicializarCacheDesdeSemilla() {
 const getQueue = () => JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
 const saveQueue = (q) => localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
 
-// 2. Verificar si la PC está alcanzable en el puerto 3001
+// 2. Comprobar si el servidor de tu PC (puerto 3001) está activo
 export async function checkPCServer() {
   try {
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 1500);
-    const res = await originalFetch(`${PC_API_URL}/productos`, {
+    const id = setTimeout(() => controller.abort(), 1200);
+    const res = await originalFetch(`${PC_API_URL}/cuentas?t=${Date.now()}`, {
       method: "GET",
       signal: controller.signal,
     });
@@ -37,7 +36,7 @@ export async function checkPCServer() {
   }
 }
 
-// 3. Subir cambios acumulados a la PC
+// 3. Vaciar cola de cambios pendientes hacia la PC
 let sincronizando = false;
 export async function sincronizarColaConPC() {
   if (sincronizando) return;
@@ -71,14 +70,14 @@ export async function sincronizarColaConPC() {
   sincronizando = false;
 }
 
-// 4. Redirigir todas las llamadas al puerto 3001
+// 4. Activar el interceptor de forma inmediata
 export function activarModoOffline() {
   inicializarCacheDesdeSemilla();
 
   window.fetch = async (input, options = {}) => {
     const urlStr = typeof input === "string" ? input : input.url;
 
-    // Detectar cualquier llamada al puerto 3001 (sea localhost o 192.168.1.119)
+    // Interceptar cualquier llamada al puerto 3001
     if (!urlStr.includes(":3001")) {
       return originalFetch(input, options);
     }
@@ -86,7 +85,7 @@ export function activarModoOffline() {
     const urlObj = new URL(urlStr, PC_API_URL);
     const path = urlObj.pathname + urlObj.search;
     const segmentos = urlObj.pathname.split("/").filter(Boolean);
-    const coleccion = segmentos[0];
+    const coleccion = segmentos[0]; // cuentas, gastos, ventas, productos, etc.
     const itemId = segmentos[1];
     const method = (options.method || "GET").toUpperCase();
     const cacheKey = `mpf_cache_${coleccion}`;
@@ -97,28 +96,40 @@ export function activarModoOffline() {
       if (online) {
         await sincronizarColaConPC();
         try {
+          // Si no tiene query params, guardamos la colección completa en caché
           const res = await originalFetch(`${PC_API_URL}${path}`);
           if (res.ok) {
             const data = await res.clone().json();
-            if (!itemId) {
+            if (!itemId && !urlObj.search) {
               localStorage.setItem(cacheKey, JSON.stringify(data));
             }
             return res;
           }
         } catch {
-          // Si falla la red, cae al respaldo local de abajo
+          // Si falla, usa los datos locales abajo
         }
       }
 
-      // Si no pudo conectar a la PC, entrega los datos guardados en el celular
-      const localData = JSON.parse(
+      // Respuesta Offline desde la memoria del celular (o db.json de respaldo)
+      let localData = JSON.parse(
         localStorage.getItem(cacheKey) || JSON.stringify(dbInicial[coleccion] || [])
       );
-      const resultado = itemId
-        ? localData.find((x) => String(x.id) === String(itemId)) || {}
-        : localData;
 
-      return new Response(JSON.stringify(resultado), {
+      // Si pide un ID específico (ej: /cuentas/1)
+      if (itemId) {
+        const encontrado = localData.find((x) => String(x.id) === String(itemId));
+        return new Response(JSON.stringify(encontrado || {}), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      // Si tiene filtros en la URL (ej: /mensualidades_pagos?mes=2026-08)
+      urlObj.searchParams.forEach((valor, clave) => {
+        localData = localData.filter((item) => String(item[clave]) === String(valor));
+      });
+
+      return new Response(JSON.stringify(localData), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
@@ -149,6 +160,7 @@ export function activarModoOffline() {
     }
     localStorage.setItem(cacheKey, JSON.stringify(localData));
 
+    // Intentar mandar a la PC si está encendida
     const online = await checkPCServer();
     if (online) {
       await sincronizarColaConPC();
@@ -165,6 +177,7 @@ export function activarModoOffline() {
       }
     }
 
+    // Guardar en la cola de espera si la PC está apagada
     const cola = getQueue();
     cola.push({
       path,
@@ -180,6 +193,7 @@ export function activarModoOffline() {
     });
   };
 
+  // Radar cada 5 segundos
   setInterval(async () => {
     const online = await checkPCServer();
     if (online && getQueue().length > 0) {
@@ -187,3 +201,6 @@ export function activarModoOffline() {
     }
   }, 5000);
 }
+
+// ¡CLAVE!: Lo ejecutamos aquí mismo para que se active ANTES de que cargue App.jsx
+activarModoOffline();
