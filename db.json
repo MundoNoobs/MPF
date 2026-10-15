@@ -1,8 +1,8 @@
 {
   "caja": {
     "dineroTotal": 900000,
-    "dineroCompra": 39223,
-    "dineroReserva": 70000
+    "dineroCompra": 40423,
+    "dineroReserva": 70800
   },
   "productos": [
     {
@@ -20,7 +20,7 @@
     {
       "nombre": "Bidón de Agua 20L",
       "precio": 2000,
-      "stock": 18,
+      "stock": 17,
       "id": "VIbPuapf4kw"
     },
     {
@@ -6036,6 +6036,40 @@
       "reservaAntesDelPago": 0,
       "entregoEnvase": true,
       "envasesAdeudados": 0
+    },
+    {
+      "clienteNombre": "707 B",
+      "fechaDia": "2026-10-14",
+      "fechaHoraExacta": "2026-10-14 17:03:01",
+      "productos": [
+        {
+          "productoId": "VIbPuapf4kw",
+          "nombre": "Bidón de Agua 20L",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "PQnflv13sJ8",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "VIbPuapf4kw": {
+          "id": "FIJNdXuU8zk",
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "unidadesPorPack": 1
+        }
+      },
+      "costoReposicionTotal": 1200,
+      "costoCompraAsignado": 1200,
+      "dineroReservaAsignado": 800,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
     }
   ],
   "gastos": [
@@ -8879,6 +8913,16 @@
         "dineroCompra": 6723
       },
       "id": "0kNuMyCJ-1o"
+    },
+    {
+      "fechaHora": "2026-10-15 17:03:22",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "3vLnoV2WH6I"
     }
   ],
   "mensualidades": [
