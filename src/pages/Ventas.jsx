@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { format, addDays, subDays } from 'date-fns'; 
-import { aplicarCambiosSaldos } from '../utils/finanzas';
+import { aplicarCambiosSaldos, distribuirCobro } from '../utils/finanzas';
 
 export default function Ventas() {
   const HOST = `http://${window.location.hostname}:3001`;
@@ -229,8 +229,10 @@ export default function Ventas() {
     }
 
     const montoCobrado = Number(venta.total) - Number(venta.abono || 0);
-    const compra = Math.min(montoCobrado, Math.max(0, costoReposicionTotal - Number(venta.costoCompraAsignado || 0)));
-    const reserva = montoCobrado - compra;
+    const { compra, reserva } = distribuirCobro(
+      montoCobrado,
+      costoReposicionTotal - Number(venta.costoCompraAsignado || 0)
+    );
     try {
       await aplicarCambiosSaldos(HOST, { dineroCompra: compra, dineroReserva: reserva }, 'Cobro de venta', hora);
       try {

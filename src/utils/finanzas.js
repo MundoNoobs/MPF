@@ -12,6 +12,20 @@ export const obtenerSaldos = (caja = {}) => ({
   reserva: Number(caja.dineroReserva || 0)
 });
 
+export const distribuirCobro = (montoCobrado, compraMaxima) => {
+  const monto = Math.max(0, Number(montoCobrado) || 0);
+  const compraSinRedondear = Math.min(monto, Math.max(0, Number(compraMaxima) || 0));
+  const compraRedondeada = compraSinRedondear === 0
+    ? 0
+    : Math.ceil(compraSinRedondear / 100) * 100;
+  const compra = Math.min(monto, compraRedondeada);
+
+  return {
+    compra,
+    reserva: monto - compra
+  };
+};
+
 export async function aplicarCambiosSaldos(HOST, cambios, tipo, fechaHora) {
   const camposPermitidos = Object.values(CAMPOS_SALDO);
   const cambiosValidos = Object.fromEntries(

@@ -1,26 +1,26 @@
 {
   "caja": {
     "dineroTotal": 900000,
-    "dineroCompra": 40423,
-    "dineroReserva": 70800
+    "dineroCompra": 6898,
+    "dineroReserva": 69325
   },
   "productos": [
     {
       "nombre": "Coca Cola 2.5",
       "precio": 2500,
-      "stock": 16,
+      "stock": 19,
       "id": "2MS0VRpSHZU"
     },
     {
       "nombre": "Coca Cola Zero 2.0",
       "precio": 2000,
-      "stock": 11,
+      "stock": 10,
       "id": "CNW4I2XXfcc"
     },
     {
       "nombre": "Bidón de Agua 20L",
       "precio": 2000,
-      "stock": 17,
+      "stock": 43,
       "id": "VIbPuapf4kw"
     },
     {
@@ -32,7 +32,7 @@
     {
       "nombre": "Sprite 2.0",
       "precio": 2000,
-      "stock": 7,
+      "stock": 6,
       "id": "GprOau1U7qc"
     },
     {
@@ -48,10 +48,16 @@
       "id": "upQu87Ym5qU"
     },
     {
-      "nombre": "Envases",
-      "precio": 500,
-      "stock": 997,
-      "id": "QL5LQb9ugMA"
+      "nombre": "Inka Kola",
+      "precio": 2000,
+      "stock": 3,
+      "id": "l2TnK32WSDI"
+    },
+    {
+      "nombre": "Coca Cola 2.0",
+      "precio": 2000,
+      "stock": 4,
+      "id": "Sm2RRzkW-50"
     }
   ],
   "clientes": [
@@ -6070,6 +6076,331 @@
       "abonoAntesDelPago": 0,
       "compraAntesDelPago": 0,
       "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "911 A",
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:28:23",
+      "productos": [
+        {
+          "productoId": "VIbPuapf4kw",
+          "nombre": "Bidón de Agua 20L",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "0bgdc9NrVC8",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "VIbPuapf4kw": {
+          "id": "FIJNdXuU8zk",
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "unidadesPorPack": 1
+        }
+      },
+      "costoReposicionTotal": 1200,
+      "costoCompraAsignado": 1200,
+      "dineroReservaAsignado": 800,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "503 B",
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:29:00",
+      "productos": [
+        {
+          "productoId": "2MS0VRpSHZU",
+          "nombre": "Coca Cola 2.5",
+          "cantidad": 1,
+          "subtotal": 2500
+        }
+      ],
+      "total": 2500,
+      "pagado": true,
+      "enCaja": false,
+      "id": "kwuVDA7k-GU",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2500,
+      "packsSeleccionados": {
+        "2MS0VRpSHZU": {
+          "id": "FqHc9YXE5B8",
+          "nombre": "Coca Cola 2.5",
+          "precio": 9000,
+          "unidadesPorPack": 6
+        }
+      },
+      "costoReposicionTotal": 1500,
+      "costoCompraAsignado": 1500,
+      "dineroReservaAsignado": 1000,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "804 B",
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:29:12",
+      "productos": [
+        {
+          "productoId": "VIbPuapf4kw",
+          "nombre": "Bidón de Agua 20L",
+          "cantidad": 2,
+          "subtotal": 4000
+        }
+      ],
+      "total": 4000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "4GrEjZIEEDo",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 4000,
+      "packsSeleccionados": {
+        "VIbPuapf4kw": {
+          "id": "FIJNdXuU8zk",
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "unidadesPorPack": 1
+        }
+      },
+      "costoReposicionTotal": 2400,
+      "costoCompraAsignado": 2400,
+      "dineroReservaAsignado": 1600,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "105 B",
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:29:21",
+      "productos": [
+        {
+          "productoId": "VIbPuapf4kw",
+          "nombre": "Bidón de Agua 20L",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "yavbl_2vx8s",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "VIbPuapf4kw": {
+          "id": "FIJNdXuU8zk",
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "unidadesPorPack": 1
+        }
+      },
+      "costoReposicionTotal": 1200,
+      "costoCompraAsignado": 1200,
+      "dineroReservaAsignado": 800,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "411 B",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 16:56:25",
+      "productos": [
+        {
+          "productoId": "GprOau1U7qc",
+          "nombre": "Sprite 2.0",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "BRv4KRDoVJ4",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "GprOau1U7qc": {
+          "id": "hpj1tF9xa_w",
+          "nombre": "Sprite 2.0",
+          "precio": 9800,
+          "unidadesPorPack": 8
+        }
+      },
+      "costoReposicionTotal": 1225,
+      "costoCompraAsignado": 1225,
+      "dineroReservaAsignado": 775,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "207 A",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 16:57:00",
+      "productos": [
+        {
+          "productoId": "VIbPuapf4kw",
+          "nombre": "Bidón de Agua 20L",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "TGGa0pQ7KXs",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "VIbPuapf4kw": {
+          "id": "FIJNdXuU8zk",
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "unidadesPorPack": 1
+        }
+      },
+      "costoReposicionTotal": 1200,
+      "costoCompraAsignado": 1200,
+      "dineroReservaAsignado": 800,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "1103 A",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 16:59:11",
+      "productos": [
+        {
+          "productoId": "l2TnK32WSDI",
+          "nombre": "Inka Kola",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "hdnoefSIYVQ",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "l2TnK32WSDI": {
+          "id": "sjfygZP47N0",
+          "nombre": "Pack de bebidas 2.0",
+          "precio": 9800,
+          "unidadesPorPack": 8
+        }
+      },
+      "costoReposicionTotal": 1225,
+      "costoCompraAsignado": 1225,
+      "dineroReservaAsignado": 775,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "1207 B",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 16:59:32",
+      "productos": [
+        {
+          "productoId": "2MS0VRpSHZU",
+          "nombre": "Coca Cola 2.5",
+          "cantidad": 1,
+          "subtotal": 2500
+        }
+      ],
+      "total": 2500,
+      "pagado": true,
+      "enCaja": false,
+      "id": "swugFdEIe60",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2500,
+      "packsSeleccionados": {
+        "2MS0VRpSHZU": {
+          "id": "FqHc9YXE5B8",
+          "nombre": "Coca Cola 2.5",
+          "precio": 9000,
+          "unidadesPorPack": 6
+        }
+      },
+      "costoReposicionTotal": 1500,
+      "costoCompraAsignado": 1500,
+      "dineroReservaAsignado": 1000,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "411 B",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 16:59:45",
+      "productos": [
+        {
+          "productoId": "CNW4I2XXfcc",
+          "nombre": "Coca Cola Zero 2.0",
+          "cantidad": 1,
+          "subtotal": 2000
+        }
+      ],
+      "total": 2000,
+      "pagado": true,
+      "enCaja": false,
+      "id": "3OnS-ubLfLE",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0,
+      "abono": 2000,
+      "packsSeleccionados": {
+        "CNW4I2XXfcc": {
+          "id": "CHoztAQPfHk",
+          "nombre": "Coca Cola Zero",
+          "precio": 9800,
+          "unidadesPorPack": 8
+        }
+      },
+      "costoReposicionTotal": 1225,
+      "costoCompraAsignado": 1225,
+      "dineroReservaAsignado": 775,
+      "abonoAntesDelPago": 0,
+      "compraAntesDelPago": 0,
+      "reservaAntesDelPago": 0
+    },
+    {
+      "clienteNombre": "610 B",
+      "fechaDia": "2026-10-16",
+      "fechaHoraExacta": "2026-10-16 17:21:38",
+      "productos": [
+        {
+          "productoId": "2MS0VRpSHZU",
+          "nombre": "Coca Cola 2.5",
+          "cantidad": 1,
+          "subtotal": 2500
+        }
+      ],
+      "total": 2500,
+      "pagado": false,
+      "enCaja": false,
+      "id": "UahWWD48SVE",
+      "entregoEnvase": true,
+      "envasesAdeudados": 0
     }
   ],
   "gastos": [
@@ -6749,6 +7080,61 @@
         "dineroCompra": -18000
       },
       "id": "iT4KUdn2YYU"
+    },
+    {
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:31:08",
+      "items": [
+        {
+          "idTemp": 1792107048850,
+          "nombre": "Bidon 20L",
+          "precio": 1200,
+          "cantidad": 31,
+          "subtotal": 37200,
+          "recurrenteId": "FIJNdXuU8zk",
+          "productoId": "VIbPuapf4kw",
+          "unidadesPorPack": 1,
+          "unidadesIngresadas": 31
+        },
+        {
+          "idTemp": 1792107060480,
+          "nombre": "Coca Cola 2.5",
+          "precio": 9000,
+          "cantidad": 1,
+          "subtotal": 9000,
+          "recurrenteId": "FqHc9YXE5B8",
+          "productoId": "2MS0VRpSHZU",
+          "unidadesPorPack": 6,
+          "unidadesIngresadas": 6
+        }
+      ],
+      "total": 46200,
+      "cambiosSaldos": {
+        "dineroCompra": -46200
+      },
+      "id": "WQbdy9gUfBg"
+    },
+    {
+      "fechaDia": "2026-10-15",
+      "fechaHoraExacta": "2026-10-15 20:32:10",
+      "items": [
+        {
+          "idTemp": 1792107128193,
+          "nombre": "Pack de Bebidas Surtida (4xCoca, 4xInka)",
+          "precio": 9800,
+          "cantidad": 1,
+          "subtotal": 9800,
+          "recurrenteId": null,
+          "productoId": null,
+          "unidadesPorPack": 1,
+          "unidadesIngresadas": 0
+        }
+      ],
+      "total": 9800,
+      "cambiosSaldos": {
+        "dineroCompra": -9800
+      },
+      "id": "MMllc5TpkZk"
     }
   ],
   "gastosRecurrentes": [
@@ -6800,6 +7186,20 @@
       "productoId": "GprOau1U7qc",
       "unidadesPorPack": 8,
       "id": "DfZbkM8L5Co"
+    },
+    {
+      "nombre": "Pack de bebidas 2.0",
+      "precio": 9800,
+      "productoId": "l2TnK32WSDI",
+      "unidadesPorPack": 8,
+      "id": "sjfygZP47N0"
+    },
+    {
+      "nombre": "Pack de Bebidas 2.0",
+      "precio": 9800,
+      "productoId": "Sm2RRzkW-50",
+      "unidadesPorPack": 8,
+      "id": "CTatfmbTYrY"
     }
   ],
   "movimientos": [
@@ -8923,6 +9323,184 @@
         "dineroReserva": 800
       },
       "id": "3vLnoV2WH6I"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:26",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "WBA1hD2JpD8"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:29",
+      "tipo": "Reversión de cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": -1200,
+        "dineroReserva": -800
+      },
+      "id": "EDUKV4Fp1Vs"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:29",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "onYfJhJvIA8"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:31",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1500,
+        "dineroReserva": 1000
+      },
+      "id": "DvpbTsrH-Ik"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:32",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 2400,
+        "dineroReserva": 1600
+      },
+      "id": "kngK6dAHvJs"
+    },
+    {
+      "fechaHora": "2026-10-15 20:29:33",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "fckgF8trV9Q"
+    },
+    {
+      "fechaHora": "2026-10-15 20:31:08",
+      "tipo": "Compra de pack / salida por gasto",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": -46200
+      },
+      "id": "JUhoJwVsCd4"
+    },
+    {
+      "fechaHora": "2026-10-15 20:31:40",
+      "tipo": "Transferencia entre saldos",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroReserva": -9800,
+        "dineroCompra": 9800
+      },
+      "id": "Qogz76jkukc"
+    },
+    {
+      "fechaHora": "2026-10-15 20:32:10",
+      "tipo": "Compra de pack / salida por gasto",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": -9800
+      },
+      "id": "ayFnn0Q5ZSI"
+    },
+    {
+      "fechaHora": "2026-10-16 16:55:32",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "7VDc6IZX5p0"
+    },
+    {
+      "fechaHora": "2026-10-16 16:55:49",
+      "tipo": "Eliminación de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": -1200,
+        "dineroReserva": -800
+      },
+      "id": "X39pe9G0_jg"
+    },
+    {
+      "fechaHora": "2026-10-16 16:56:28",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1225,
+        "dineroReserva": 775
+      },
+      "id": "P13eYHOC6AI"
+    },
+    {
+      "fechaHora": "2026-10-16 16:57:03",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1200,
+        "dineroReserva": 800
+      },
+      "id": "DugaTB1EBcI"
+    },
+    {
+      "fechaHora": "2026-10-16 16:59:14",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1225,
+        "dineroReserva": 775
+      },
+      "id": "OqadNaAxApM"
+    },
+    {
+      "fechaHora": "2026-10-16 16:59:35",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1500,
+        "dineroReserva": 1000
+      },
+      "id": "Z83PJl5KxJU"
+    },
+    {
+      "fechaHora": "2026-10-16 16:59:48",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1225,
+        "dineroReserva": 775
+      },
+      "id": "CwsKLKwrYr0"
+    },
+    {
+      "fechaHora": "2026-10-16 17:21:54",
+      "tipo": "Cobro de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": 1300,
+        "dineroReserva": 700
+      },
+      "id": "8YgP7k38lY4"
+    },
+    {
+      "fechaHora": "2026-10-16 17:22:04",
+      "tipo": "Eliminación de venta",
+      "monto": 0,
+      "cambiosSaldos": {
+        "dineroCompra": -1300,
+        "dineroReserva": -700
+      },
+      "id": "MIocybErNAo"
     }
   ],
   "mensualidades": [
