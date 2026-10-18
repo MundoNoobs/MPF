@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import SyncPanel from '../components/SyncPanel';
 
 export default function Dashboard() {
   const HOST = `http://${window.location.hostname}:3001`;
@@ -78,6 +79,11 @@ export default function Dashboard() {
           Resumen General
         </Link>
       </div>
+
+      <hr style={{margin: '30px 0', borderColor: '#e5e7eb'}} />
+
+      {/* SINCRONIZACIÓN DE DB CON EL SISTEMA WEB */}
+      <SyncPanel />
 
       <hr style={{margin: '30px 0', borderColor: '#e5e7eb'}} />
 

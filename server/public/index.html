@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MPF · Panel de Sincronización</title>
+  <style>
+    body { font-family: sans-serif; background: #f3f4f6; margin: 0; color: #1f2937; }
+    header { background: #1e1e1e; color: #fff; padding: 16px 20px; }
+    main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .barra { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 15px; }
+    button { border: 0; border-radius: 8px; padding: 10px 16px; color: #fff; font-weight: bold; cursor: pointer; background: #3b82f6; }
+    button.rojo { background: #ef4444; } button.verde { background: #10b981; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #estado { padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; display: none; }
+    .ok { background: #d1fae5; color: #065f46; } .error { background: #fee2e2; color: #991b1b; }
+    .tabla-wrap { overflow-x: auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+    th { background: #f9fafb; }
+    .punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; background: #9ca3af; }
+    .punto.on { background: #10b981; }
+    .chip { background: #fef3c7; color: #92400e; border-radius: 10px; padding: 2px 8px; font-size: 12px; }
+    small { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <header><h2 style="margin:0">MPF · Dispositivos conectados</h2></header>
+  <main>
+    <div class="barra">
+      <button id="btnBroadcast" class="verde">📡 Sincronización masiva</button>
+      <button id="btnRefrescar">🔄 Actualizar</button>
+      <small id="meta"></small>
+    </div>
+    <div id="estado" role="status"></div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>IP</th><th>MAC</th><th>Nombre</th><th>Último contacto</th><th>Última sync</th><th>Contactos</th><th>Pendiente</th><th></th></tr>
+        </thead>
+        <tbody id="cuerpo"><tr><td colspan="9">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+  <script src="/dashboard.js"></script>
+</body>
+</html>
